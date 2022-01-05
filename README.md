@@ -1,6 +1,6 @@
 ## App requirements
 
-ThreeFifteen is a application for managing school buses.
+ThreeFifteen is an open-source school bus status tracker.
 
 ## Features
 

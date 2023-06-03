@@ -1,9 +1,12 @@
 from flask import Flask, jsonify, request, render_template
+from flask_cors import CORS, cross_origin
 import sys
 import json
 from time import sleep
 
 app = Flask(__name__)
+cors = CORS(app)
+app.config["CORS_HEADERS"] = "Content-Type"
 
 original_busdata = {
     "present": [],
@@ -17,6 +20,7 @@ def main():
     return render_template("main.html", busdata=busdata)
 
 @app.route("/busdata", methods=["GET", "POST"])
+@cross_origin()
 def transfer_data():
     global busdata
     return jsonify(busdata)

@@ -1,4 +1,4 @@
-## App requirements
+## ThreeFifteen
 
 ThreeFifteen is an open-source school bus status tracker.
 

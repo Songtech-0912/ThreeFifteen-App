@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ThreeFifteen Admin</title>
+    {% block styles %}
+    <link rel="stylesheet" href="https://fonts.xz.style/serve/inter.css">
+    <link rel="stylesheet" type="text/css" href="{{url_for('.static', filename='index.css')}}">
+    <link rel="stylesheet" type="text/css" href="{{url_for('.static', filename='new.min.css')}}">
+    {% endblock %}
+</head>
+<body>
+    <header>
+        <h1>ThreeFifteen Admin</h1>
+    </header>
+    <div class="page-container">
+        <section id="bus-card-container">
+            <h2>Buses currently present</h2>
+            <div class="bus-list">
+                {% for i in busdata["present"] %}
+                    <span class="bus-present">Bus {{ i }}</span>
+                {% endfor %}
+            </div>
+            <h2>Buses not here</h2>
+            <div class="bus-list">
+                {% for i in busdata["absent"] %}
+                    <span class="bus-absent">Bus {{ i }}</span>
+                {% endfor %}
+            </div>
+        </section>
+        <section id="admin-panel">
+            <button id="clear-all">Clear all buses</button>
+            <button id="check-all">Check all buses</button>
+            <form id="bus-form" method="post">
+            {% for bus in checkbox_data %}
+                <div>
+                    {% if checkbox_data[bus] is sameas true %}
+                    <input type="checkbox" name="bus-{{ bus }}" id="bus-{{ bus }}">
+                    {% else %}
+                    <input type="checkbox" name="bus-{{ bus }}" id="bus-{{ bus }}" checked>
+                    {% endif %}
+                    <label for="bus-{{ i }}">Bus {{ bus }}</label>
+                </div>
+            {% endfor %}
+            <input type="submit" class="hidden" id="submit-btn">
+            </form>
+        </section>
+    </div>
+    <script>
+        function submit() {
+            submit_btn.click()
+        }
+        const submit_btn = document.getElementById("submit-btn");
+        const admin_panel = document.getElementById("admin-panel");
+        const clear_btn = document.getElementById("clear-all");
+        const check_all_btn = document.getElementById("check-all");
+        const bus_form = document.getElementById("bus-form");
+        
+        // Press the hidden submit button to submit the form
+        // every time a checkbox is checked or unchecked
+        admin_panel.addEventListener("change", function() {
+            submit();
+        })
+        
+        // When the clear button is clicked, reset all
+        // checkboxes to be unchecked
+        clear_btn.addEventListener("click", function() {
+            let inputs = bus_form.getElementsByTagName('input');
+            for (let input of inputs) {
+                input.checked = false;
+            }
+            submit();
+        })
+        
+        // When check all button is clicked, reset all
+        // checkboxes to be checked
+        check_all_btn.addEventListener("click", function() {
+            let inputs = bus_form.getElementsByTagName('input');
+            for (let input of inputs) {
+                input.checked = true;
+            }
+            submit();
+        })
+    </script>
+</body>
+</html>

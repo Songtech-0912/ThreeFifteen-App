@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ThreeFifteen Backend</title>
+    {% block styles %}
+    <link rel="stylesheet" href="https://fonts.xz.style/serve/inter.css">
+    <link rel="stylesheet" type="text/css" href="{{url_for('.static', filename='index.css')}}">
+    <link rel="stylesheet" type="text/css" href="{{url_for('.static', filename='new.min.css')}}">
+    {% endblock %}
+</head>
+<body>
+    <header>
+        <h1>ThreeFifteen backend</h1>
+    </header>
+    <p>See <a href='/admin'>admin/</a> for school bus admin</p>
+    <p>See <a href='/busdata'>busdata/</a> for school bus API</p>
+</body>

@@ -1,25 +1,50 @@
-from flask import Flask, jsonify, request
+from flask import Flask, jsonify, request, render_template
 import sys
 import json
+from time import sleep
 
 app = Flask(__name__)
-# Some dummy code...
-busdata = {
-    "Buses present": None
+
+original_busdata = {
+    "present": [],
+    "absent": [i for i in range(1, 32)]
 }
+
+busdata = original_busdata
 
 @app.route("/")
 def main():
-    return r"See <a href='/busdata'>busdata/</a> for school bus API"
+    return render_template("main.html", busdata=busdata)
 
 @app.route("/busdata", methods=["GET", "POST"])
 def transfer_data():
     global busdata
+    return jsonify(busdata)
+
+@app.route("/admin", methods=["GET", "POST"])
+def template():
+    global busdata
+    present = []
+    absent = []
+    # When the form is submitted, adjust
+    # busdata correspondingly
     if request.method == "POST":
-        busdata = request.get_json()
-        return "Got post!\n", 200
-    else:
-        return jsonify(busdata)
+        for i in range(1, 32):
+            if f"bus-{i}" in request.form:
+                present.append(i)
+            else:
+                absent.append(i)
+        busdata["present"] = present
+        busdata["absent"] = absent
+    # Assemble checkbox data from busdata
+    checkbox_data = {}
+    for bus in busdata["present"]:
+        checkbox_data[bus] = False
+    for bus in busdata["absent"]:
+        checkbox_data[bus] = True
+    # Sort checkbox data so it is in the right order
+    checkbox_data = dict(sorted(checkbox_data.items()))
+    return render_template("admin.html", busdata=busdata, checkbox_data=checkbox_data)
 
 if __name__ == "__main__":
     app.run(debug=True)

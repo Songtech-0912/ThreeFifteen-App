@@ -52,4 +52,4 @@ def template():
     return render_template("admin.html", busdata=busdata, checkbox_data=checkbox_data)
 
 if __name__ == "__main__":
-    app.run(debug=True)
+    app.run()

@@ -17,6 +17,7 @@ busdata = original_busdata
 
 @app.route("/")
 def main():
+    global busdata
     return render_template("main.html", busdata=busdata)
 
 @app.route("/busdata", methods=["GET", "POST"])

@@ -13,8 +13,19 @@
 </head>
 <body>
     <header>
-        <h1>ThreeFifteen backend</h1>
+        <h1>ThreeFifteen</h1>
     </header>
-    <p>See <a href='/admin'>admin/</a> for school bus admin</p>
-    <p>See <a href='/busdata'>busdata/</a> for school bus API</p>
+    <p>Note: please remember to regularly refresh the page to see the latest bus data, the page does not automatically refresh.</p>
+    <h1>Buses currently present</h1>
+    <div class="bus-list">
+        {% for i in busdata["present"] %}
+            <span class="bus-present">Bus {{ i }}</span>
+        {% endfor %}
+    </div>
+    <h1>Buses not here</h1>
+    <div class="bus-list">
+        {% for i in busdata["absent"] %}
+            <span class="bus-absent">Bus {{ i }}</span>
+        {% endfor %}
+    </div>
 </body>

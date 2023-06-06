@@ -24,6 +24,9 @@ def main():
 @cross_origin()
 def transfer_data():
     global busdata
+    if request.method == "POST":
+      # probably add in a signed integrity check here
+      busdata = request.get_json()
     return jsonify(busdata)
 
 @app.route("/admin", methods=["GET", "POST"])

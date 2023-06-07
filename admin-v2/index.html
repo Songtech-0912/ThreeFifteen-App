@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ThreeFifteen</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <header>
+        <h1>ThreeFifteen</h1>
+    </header>
+    <!--Holds bus cards to be dragged-->
+    <section>
+    	<h2>Buses not here</h2>
+    	<div id="buses-not-here" class="bus-list dropbox"></div>
+    </section>
+    <section id="board">
+    	<div class="row-text">
+    		<h2>Left street side (orange)</h2>
+    		<h2>Right street side (green)</h2>
+    	</div>
+    	<div class="row">
+    		<div class="dropbox" id="board-top-left"></div>
+    		<div class="dropbox" id="board-top-right"></div>
+    	</div>
+    	<div class="row-text">
+    		<h2>Left school side (blue)</h2>
+    		<h2>Right school side (red)</h2>
+    	</div>
+    	<div class="row">
+    		<div class="dropbox" id="board-bottom-left"></div>
+    		<div class="dropbox" id="board-bottom-right"></div>
+    	</div>
+    </section>
+    <noscript>This site requires JavaScript to work. Please enable it.</noscript>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/Sortable/1.15.0/Sortable.min.js"></script>
+    <script>
+      const SERVER_API = "http://songtech0912.pythonanywhere.com/busdata";
+
+    	const buses_not_here = document.getElementById("buses-not-here");
+    	const left_street_side = document.getElementById("board-top-left");
+    	const right_street_side = document.getElementById("board-top-right");
+    	const left_school_side = document.getElementById("board-bottom-left");
+    	const right_school_side = document.getElementById("board-bottom-right");
+
+    	function generateBusHTML(el, data) {
+    	    el.innerHTML = data.map(bus => `<span class="bus-card" data-bus="${bus}" draggable="true">${bus}</span>`).join("");
+    	}
+
+    	fetch(SERVER_API).then(response => response.json()).then(busdata => {
+    	    generateBusHTML(buses_not_here, busdata.absent);
+        	generateBusHTML(left_street_side, busdata.left_street);
+        	generateBusHTML(right_street_side, busdata.right_street);
+        	generateBusHTML(left_school_side, busdata.left_school);
+        	generateBusHTML(right_school_side, busdata.right_school);
+    	})
+    	const bus_list = document.querySelector(".bus-list");
+    	const dropboxes = document.querySelectorAll(".dropbox");
+
+    	dropboxes.forEach((dropbox) => {
+    		new Sortable(dropbox, {
+    			group: "shared",
+    			animation: 150,
+    			ghostClass: "blue-background-class"
+    		})
+    	})
+
+    	function elementChildrenToList(el) {
+    		return Array.from(el.children).map(bus_el => parseInt(bus_el.dataset.bus))
+    	}
+
+    	function pushData(dry_run=true) {
+    		let absent_buses = elementChildrenToList(bus_list);
+	    	let left_street_buses = elementChildrenToList(left_street_side);
+	    	let right_street_buses = elementChildrenToList(right_street_side);
+	    	let left_school_buses = elementChildrenToList(left_school_side);
+	    	let right_school_buses = elementChildrenToList(right_school_side);
+
+    		data = JSON.stringify({
+	    	  	absent: absent_buses,
+	    	    left_street: left_street_buses,
+	    	    right_street: right_street_buses,
+	    	    left_school: left_school_buses,
+	    	    right_school: right_school_buses,
+	    	  })
+	    	console.log(data)
+	    	if (!dry_run) {
+		    	fetch(SERVER_API, {
+		    	  method: "POST",
+		    	  body: data,
+		    	  headers: {
+		    	    "Content-type": "application/json; charset=UTF-8"
+		    	  }
+		    	});
+	    	}
+    	}
+
+    	document.body.addEventListener("drop", (event) => {
+    		pushData(dry_run=false)
+    	})
+
+    </script>
+</body>
+</html>

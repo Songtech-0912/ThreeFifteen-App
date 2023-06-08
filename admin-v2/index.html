@@ -97,10 +97,17 @@
 		    	});
 	    	}
     	}
-
-    	document.body.addEventListener("drop", (event) => {
-    		pushData(dry_run=false)
-    	})
+    	
+    	// Use MutationObserver to detect changes in the DOM and 
+    	// send POST request to server when that happens
+    	const observer = new MutationObserver((mutations, observer) => {
+    	    pushData(dry_run=false)
+    	});
+    	
+    	observer.observe(document, {
+    	    subtree: true,
+    	    attributes: true
+    	});
 
     </script>
 </body>

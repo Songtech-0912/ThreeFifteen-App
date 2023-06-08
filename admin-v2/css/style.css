@@ -54,3 +54,36 @@ header {
 	padding-right: 0.5rem;
 	border: 1px solid #A6ACB2;
 }
+
+/* For toast notifications */
+
+#toast,
+#toast[hidden] {
+  display: block;
+  font-family: Inter;
+  position: fixed;
+  left: 50%;
+  bottom: 0;
+  padding: 6px 20px;
+  min-width: 30%;
+  max-width: 80%;
+  background: #333;
+  transform: translateX(-50%);
+  color: #fff;
+  text-align: center;
+  transition: all 500ms ease;
+  visibility: visible;
+  white-space: pre-wrap;
+  line-height: 2;
+  border-radius: 5px 5px 0 0;
+  box-shadow: 0 0 5px rgba(0, 0, 0, 0.3);
+  will-change: transform, opacity;
+  overflow: hidden;
+}
+#toast[hidden] {
+  transform: translateX(-50%) translateY(120%);
+  opacity: 0;
+}
+#toast.error {
+  color: #fcc;
+  background: #511;

@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ThreeFifteen</title>
+    <link rel="stylesheet" href="css/new.min.css">
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <header>
+        <h1>ThreeFifteen</h1>
+    </header>
+    <p>This app is open-source. See the source code <a href="https://github.com/Songtech-0912/Threefifteen-App">here</a></p>
+    <div id="app">Loading...</div>
+    <noscript>This site requires JavaScript to work. Please enable it.</noscript>
+</body>
+    <script src="./js/reef.min.js"></script>
+    <script>
+        let {render} = reef;
+
+        function busDataMarkup(data) {
+            return `
+            <section>
+            	<h2>Buses not here</h2>
+            	<div id="buses-not-here" class="bus-list dropbox">
+                    ${data.absent.map(bus => `<span class="bus-card bus-absent">${bus}</span>`).join("")}
+            	</div>
+            </section>
+            <section id="board">
+            	<div class="row-text">
+            		<h2>Left street side</h2>
+            		<h2>Right street side</h2>
+            	</div>
+            	<div class="row">
+            		<div class="box">
+                        ${data.left_street.map(bus => `<span class="bus-card bus-present">${bus}</span>`).join("")}
+            		</div>
+            		<div class="box">
+                        ${data.right_street.map(bus => `<span class="bus-card bus-present">${bus}</span>`).join("")}
+            		</div>
+            	</div>
+            	<div class="row-text">
+            		<h2>Left school side</h2>
+            		<h2>Right school side</h2>
+            	</div>
+            	<div class="row">
+            		<div class="box">
+                        ${data.left_school.map(bus => `<span class="bus-card bus-present">${bus}</span>`).join("")}
+            		</div>
+            		<div class="box">
+                        ${data.right_school.map(bus => `<span class="bus-card bus-present">${bus}</span>`).join("")}
+            		</div>
+            	</div>
+            </section>`;
+        }
+
+        const BUS_API = "https://songtech0912.pythonanywhere.com/busdata";
+        function autoreload() {
+          fetch(BUS_API).then(response => response.json()).then(data => render("#app", busDataMarkup(data)));
+          // Auto-fetch every second
+          setTimeout(autoreload, 1000);
+        }
+        autoreload();
+    </script>
+</html>

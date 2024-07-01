@@ -44,8 +44,9 @@
     <noscript>This site requires JavaScript to work. Please enable it.</noscript>
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/Sortable/1.15.0/Sortable.min.js"></script>
     <script>
-      const SERVER_API = "https://songtech0912.pythonanywhere.com/busdata";
-      const SERVER_KEY = "https://songtech0912.pythonanywhere.com/key";
+      	const SERVER_API = "https://songtech0912.pythonanywhere.com/busdata";
+      	const ENTER_KEY = 13;
+	    const SYSKEY = "Z2hzX2FkbWlu";
 
     	const buses_not_here = document.getElementById("buses-not-here");
     	const left_street_side = document.getElementById("board-top-left");
@@ -80,18 +81,14 @@
         	generateBusHTML(left_school_side, busdata.left_school);
         	generateBusHTML(right_school_side, busdata.right_school);
     	})
-    	
-    	fetch(SERVER_KEY).then(response => response.json()).then(response => {
-    	    let ENTER_KEY = 13;
-    	    signin_input.addEventListener("keyup", event => {
-    	        if (event.key == "Enter" || event.keyCode === ENTER_KEY) {
-    	            if (signin_input.value == response.key) {
-    	                signin.close()
-    	            } else {
-    	                log("Error: incorrect password")
-    	            }
-    	        }
-    	    })
+    	signin_input.addEventListener("keyup", event => {
+    		if (event.key == "Enter" || event.keyCode === ENTER_KEY) {
+    		    if (signin_input.value == atob(SYSKEY) {
+    			signin.close()
+    		    } else {
+    			log("Error: incorrect password")
+    		    }
+    		}
     	})
     	
     	const bus_list = document.querySelector(".bus-list");

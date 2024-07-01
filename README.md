@@ -1,6 +1,8 @@
 ## ThreeFifteen
 
-ThreeFifteen is an open-source school bus status tracker.
+ThreeFifteen is an open-source school bus status tracker, built for my high school, [GHS](https://ghs.greenwichschools.org)
+
+**Note:** for ThreeFifteen admins, see [here](https://songtech-0912.github.io/ThreeFifteen-App/admin-v2/) for the admin login, for students of GHS, see [here](https://songtech-0912.github.io/ThreeFifteen-App/client-v2/) for the client
 
 ## Features
 
